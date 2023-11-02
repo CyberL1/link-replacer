@@ -14,7 +14,28 @@ client.once("ready", () => {
 client.on("messageCreate", message => {
   if (message.author.bot) return;
 
-  console.log(message.content);
+  const linksToReplace = [];
+  const splitedMessage = message.content.replaceAll("\n", " ").split(/ +/g);
+
+  splitedMessage.map(link => {
+    Object.keys(links).map(domain => {
+      if (!link.startsWith(`${domain}/`)) return;
+
+      linksToReplace.push(link);
+    });
+  });
+
+
+  if (!linksToReplace.length) return;
+
+  const replacedLinks = linksToReplace.map(link => {
+    const { protocol, hostname } = new URL(link);
+    const domain = `${protocol}//${hostname}`;
+
+    return `${link} -> ${link.replace(domain, links[domain])}`;
+  }).join("\n");
+
+  message.reply(`Replaced links (**${linksToReplace.length}**)\n${replacedLinks}`).catch(console.error);
 });
 
 client.login(process.env.BOT_TOKEN);
