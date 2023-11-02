@@ -34,7 +34,7 @@ client.on("messageCreate", async message => {
       const { protocol, hostname } = new URL(link);
       const domain = `${protocol}//${hostname}`;
 
-      return `${link} -> ${link.replace(domain, links[domain])}`;
+      return `<${link}> -> ${link.replace(domain, links[domain])}`;
     }).join("\n");
 
     return message.reply(replacedLinks).catch(console.error);
