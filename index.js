@@ -11,7 +11,7 @@ client.once("ready", () => {
   console.log(`${client.user.username} ready`);
 });
 
-client.on("messageCreate", message => {
+client.on("messageCreate", async message => {
   if (message.author.bot) return;
 
   const linksToReplace = [];
@@ -25,17 +25,35 @@ client.on("messageCreate", message => {
     });
   });
 
-
   if (!linksToReplace.length) return;
 
-  const replacedLinks = linksToReplace.map(link => {
-    const { protocol, hostname } = new URL(link);
-    const domain = `${protocol}//${hostname}`;
+  const perms = message.channel.permissionsFor(client.user.id).toArray();
 
-    return `${link} -> ${link.replace(domain, links[domain])}`;
-  }).join("\n");
+  if (!perms.includes("ManageWebhooks") || !perms.includes("ManageMessages")) {
+    const replacedLinks = linksToReplace.map(link => {
+      const { protocol, hostname } = new URL(link);
+      const domain = `${protocol}//${hostname}`;
 
-  message.reply(`Replaced links (**${linksToReplace.length}**)\n${replacedLinks}`).catch(console.error);
+      return `${link} -> ${link.replace(domain, links[domain])}`;
+    }).join("\n");
+
+    return message.reply(replacedLinks).catch(console.error);
+  }
+
+  let webhook = (await (await (message.channel.fetchWebhooks())).filter(w => w.owner.id === client.user.id)).first();
+  if (!webhook) webhook = await message.channel.createWebhook({ name: "Link replacer" });
+
+  let content = message.content;
+
+  splitedMessage.map(() => {
+    Object.keys(links).map(domain => {
+      content = content.replace(domain, links[domain]);
+    });
+  });
+
+  message.delete();
+
+  webhook.send({ content, username: message.member.displayName, avatarURL: message.member.displayAvatarURL() });
 });
 
 client.login(process.env.BOT_TOKEN);
