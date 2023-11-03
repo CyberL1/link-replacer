@@ -37,6 +37,4 @@ for (const dir of commandFiles) {
   }
 }
 
-console.log(client.commands);
-
 client.login(process.env.BOT_TOKEN);
