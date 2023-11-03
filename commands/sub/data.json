@@ -1,0 +1,11 @@
+{
+  "name": "sub",
+  "description": "Subcommand test",
+  "options": [
+    {
+      "type": 1,
+      "name": "sub",
+      "description": "Subcommand test"
+    }
+  ]
+}
