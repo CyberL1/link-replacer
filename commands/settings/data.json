@@ -1,6 +1,7 @@
 {
   "name": "settings",
   "description": "Manage settings",
+  "default_member_permissions": 8192,
   "options": [
     {
       "type": 1,
@@ -38,6 +39,11 @@
           "required": true
         }
       ]
+    },
+    {
+      "type": 1,
+      "name": "default",
+      "description": "Switch default links replacing"
     }
   ]
 }
