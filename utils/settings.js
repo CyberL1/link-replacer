@@ -11,14 +11,16 @@ export class Settings {
     }
   }
 
-  create = () => db.prepare("INSERT INTO guilds (id, links) VALUES (?, ?)").run(this.guildId, "{}");
   remove = () => db.prepare("DELETE FROM guilds WHERE id = ?").run(this.guildId);
+
   get = () => {
     const settings = db.prepare("SELECT * FROM guilds WHERE id = ?").get(this.guildId);
     settings.links = JSON.parse(settings.links);
 
     return settings;
   };
+
+  toggleDefaultLinks = () => db.prepare(`UPDATE guilds SET defaultLinks = ${!this.get().defaultLinks} WHERE id = ?`).run(this.guildId);
 
   addLink = (oldLink, newLink) => {
     let { links } = db.prepare("SELECT links FROM guilds WHERE id = ?").get(this.guildId);
