@@ -14,5 +14,5 @@ export default interaction => {
 
   if (!success) return interaction.reply({ content: "Link already exists", ephemeral: true });
 
-  interaction.reply({ content: "Link added", ephemeral: true });
+  interaction.reply({ content: "Link added" });
 };

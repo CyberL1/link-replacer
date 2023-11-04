@@ -8,5 +8,5 @@ export default interaction => {
 
   if (!success) return interaction.reply({ content: "Link not found", ephemeral: true });
 
-  interaction.reply({ content: "Link removed", ephemeral: true });
+  interaction.reply({ content: "Link removed" });
 };
