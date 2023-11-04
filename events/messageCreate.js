@@ -1,11 +1,17 @@
 import { Settings } from "../utils/settings.js";
+import { readFileSync } from "node:fs";
 
 export default {
   run: async message => {
     if (message.author.bot) return;
 
     const settings = new Settings(message.guild.id);
-    const { links } = settings.get();
+    let { links } = settings.get();
+
+    if (settings.get().defaultLinks) {
+      const defaultLinks = JSON.parse(readFileSync("defaultLinks.json"));
+      links = { ...defaultLinks, ...links };
+    }
 
     const linksToReplace = [];
     const splitedMessage = message.content.replaceAll("\n", " ").split(/ +/g);
