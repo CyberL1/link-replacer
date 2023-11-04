@@ -1,0 +1,43 @@
+{
+  "name": "settings",
+  "description": "Manage settings",
+  "options": [
+    {
+      "type": 1,
+      "name": "view",
+      "description": "View links"
+    },
+    {
+      "type": 1,
+      "name": "add-link",
+      "description": "Add a link",
+      "options": [
+        {
+          "type": 3,
+          "name": "old_link",
+          "description": "Link to replace",
+          "required": true
+        },
+        {
+          "type": 3,
+          "name": "new_link",
+          "description": "Link replacement",
+          "required": true
+        }
+      ]
+    },
+    {
+      "type": 1,
+      "name": "remove-link",
+      "description": "Remove a link",
+      "options": [
+        {
+          "type": 3,
+          "name": "link",
+          "description": "Link to remove",
+          "required": true
+        }
+      ]
+    }
+  ]
+}

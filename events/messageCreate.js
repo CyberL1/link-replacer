@@ -1,8 +1,11 @@
+import { Settings } from "../utils/settings.js";
+
 export default {
   run: async message => {
     if (message.author.bot) return;
 
-    const { links } = message.client;
+    const settings = new Settings(message.guild.id);
+    const { links } = settings.get();
 
     const linksToReplace = [];
     const splitedMessage = message.content.replaceAll("\n", " ").split(/ +/g);

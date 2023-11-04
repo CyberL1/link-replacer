@@ -5,7 +5,7 @@ import { existsSync } from "node:fs";
 
 const client = new Client({ intents: ["Guilds", "GuildMessages", "MessageContent"] });
 
-client.links = JSON.parse(await (readFile("links.json")));
+client.defaultLinks = JSON.parse(await (readFile("defaultLinks.json")));
 client.commands = new Collection();
 
 const eventFiles = (await readdir("events", { withFileTypes: true })).filter(file => file.isFile() && file.name.endsWith(".js"));
