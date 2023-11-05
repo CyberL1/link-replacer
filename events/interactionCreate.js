@@ -6,6 +6,11 @@ export default {
     const cmd = interaction.client.commands.get(command);
     if (!cmd) return;
 
-    cmd(interaction);
+    if (interaction.isAutocomplete()) {
+      cmd.autocomplete(interaction);
+    } else {
+      if (!cmd.run) return cmd(interaction);
+      cmd.run(interaction);
+    }
   },
 };
