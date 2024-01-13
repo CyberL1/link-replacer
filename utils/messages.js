@@ -5,29 +5,18 @@ export const canDoWebhooks = message => {
 };
 
 export const replaceLinks = (message, links) => {
-  let splitedMessage = "";
-
-  if (canDoWebhooks(message)) splitedMessage = message.content.split(/ +/g);
-  else splitedMessage = message.content.replaceAll("\n", " ").split(/ +/g);
-
+  const match = /https?:\/\/\S+/g;
   const urls = [];
 
-  for (let i = 0; i < splitedMessage.length; i++) {
-    let link;
+  if (!message.content.match(match)) return { urls: [], content: "" };
+  for (const link of message.content.match(match)) {
+    const { protocol, hostname, pathname } = new URL(link);
 
-    if (/https?:\/\//.test(splitedMessage[i])) {
-      const { protocol, hostname, pathname } = new URL(splitedMessage[i]);
-      splitedMessage[i] = `${protocol}//${hostname}${pathname}`;
-      link = `${protocol}//${hostname}`;
-    }
-
-    if (/^https?:\/\//.test(splitedMessage[i]) && Object.keys(links).includes(link)) {
-      const { pathname } = new URL(splitedMessage[i]);
-
-      urls.push({ link, pathname });
-      splitedMessage[i] = `${links[link]}${pathname}`;
-    }
+    if (!Object.keys(links).includes(hostname)) continue;
+    urls.push({ protocol, hostname, pathname });
   }
 
-  return canDoWebhooks(message) ? splitedMessage.join(" ") : urls;
+  const content = message.content.replaceAll(match, url => Object.keys(links).includes(new URL(url).hostname) ? `${new URL(url).protocol}//${links[new URL(url).hostname]}` : url);
+
+  return { urls, content };
 };

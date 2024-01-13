@@ -4,10 +4,9 @@ export default interaction => {
   const oldLink = interaction.options.getString("old_link");
   const newLink = interaction.options.getString("new_link");
 
-  const linkRegexp = /https?:\/\//;
+  const linkRegexp = /^((?!-)[a-z-_]{1,63}(?<!-)\.)+[a-z]{2,6}$/m;
 
-  if (!linkRegexp.test(oldLink) || !linkRegexp.test(newLink)) return interaction.reply({ content: "Links must begin with `http://` or `https://`", ephemeral: true });
-  if (oldLink.includes(" ") || newLink.includes(" ")) return interaction.reply({ content: "Links cannot contain spaces", ephemeral: true });
+  if (!linkRegexp.test(oldLink) || !linkRegexp.test(newLink)) return interaction.reply({ content: "Links must only contain `[-, _, a-z, 0-9]` and be 1-63 charachters long (2-6 for TLD)", ephemeral: true });
 
   const settings = new Settings(interaction.guild.id);
   const success = settings.addLink(oldLink, newLink);

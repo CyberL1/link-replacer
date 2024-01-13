@@ -14,14 +14,13 @@ export default {
       links = { ...defaultLinks, ...links };
     }
 
-    let replacedLinks = replaceLinks(message, links);
-    if (!replacedLinks.length) return;
+    const { urls, content } = replaceLinks(message, links);
 
-    console.log(canDoWebhooks(message));
+    if (!urls.length || !content.length) return;
 
-    if (!canDoWebhooks(message)) {
-      replacedLinks = replacedLinks.map(({ link, pathname }) => {
-        return `<${link}${pathname}> -> ${links[link]}${pathname}`;
+    if (!canDoWebhooks(message) && urls.length) {
+      const replacedLinks = urls.map(({ protocol, hostname, pathname }) => {
+        return `<${protocol}//${hostname}${pathname}> -> ${protocol}//${links[hostname]}${pathname}`;
       }).join("\n");
 
       return message.reply(replacedLinks).catch(console.error);
@@ -29,8 +28,8 @@ export default {
 
     let webhook = (await (await (message.channel.fetchWebhooks())).filter(w => w.owner.id === message.client.user.id)).first();
     if (!webhook) webhook = await message.channel.createWebhook({ name: "Link replacer" });
-
     message.delete();
-    webhook.send({ content: replacedLinks, username: message.member.displayName, avatarURL: message.member.displayAvatarURL() });
+
+    webhook.send({ content, username: message.member.displayName, avatarURL: message.member.displayAvatarURL() });
   },
 };
