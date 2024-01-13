@@ -5,7 +5,7 @@ export const canDoWebhooks = message => {
 };
 
 export const replaceLinks = (message, links) => {
-  const match = /https?:\/\/\S+/g;
+  const match = /https?:\/\/\S+\.+[a-z]{2,6}/g;
   const urls = [];
 
   if (!message.content.match(match)) return { urls: [], content: "" };
