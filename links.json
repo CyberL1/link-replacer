@@ -1,4 +1,4 @@
 {
-  "https://twitter.com": "https://fxtwitter.com",
-  "https://x.com": "https://fxtwitter.com"
+  "twitter.com": "fxtwitter.com",
+  "x.com": "fxtwitter.com"
 }
