@@ -1,5 +1,5 @@
 export const replaceLinks = (message, links) => {
-  const match = /https?:\/\/\S+\.+[a-z]{2,6}\/\S[^>\s]+/g;
+  const match = /https?:\/\/\S+\.+[a-z]{2,6}\/[^>\s]*/g;
   const urls = [];
 
   if (!message.content.match(match)) {
