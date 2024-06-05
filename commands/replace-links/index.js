@@ -1,6 +1,13 @@
 import { replaceLinks } from "../../utils/messages.js";
 
 export default async (interaction) => {
+  if (interaction.targetMessage.author.id === interaction.client.user.id) {
+    return interaction.reply({
+      content: "You don't need to replace links twice",
+      ephemeral: true,
+    });
+  }
+
   if (interaction.isMessageContextMenuCommand()) {
     if (!interaction.targetMessage.content) {
       return interaction.reply({
