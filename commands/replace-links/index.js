@@ -21,7 +21,7 @@ export default async (interaction) => {
       interaction.client.links,
     );
 
-    if (!replaced) {
+    if (!replaced.length) {
       return interaction.reply({
         content: "No links to replace",
         ephemeral: true,
