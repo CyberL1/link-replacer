@@ -2,10 +2,6 @@ export const replaceLinks = (message, links) => {
   const match = /https?:\/\/\S+\.+[a-z]{2,6}\/[^>\s]*/g;
   const urls = [];
 
-  if (!message.content.match(match)) {
-    return false;
-  }
-
   for (const link of message.content.match(match)) {
     console.log(link);
     const { protocol, hostname, pathname } = new URL(link);
